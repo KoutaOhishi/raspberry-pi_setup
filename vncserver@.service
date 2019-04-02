@@ -1,0 +1,13 @@
+[Unit]
+Description=Remote Desktop service (VNC)
+After=syslog.target network.target
+[Service]
+Type=forking
+User=raspberry-pi
+PAMName=login
+PIDFile=/home/raspberry-pi/.vnc/%H:%i.pid
+ExecStartPre=-/usr/bin/vncserver -kill :%i > /dev/null 2>&1
+ExecStart=/usr/bin/vncserver -depth 24 -geometry 1440x900 :%i
+ExecStop=/usr/bin/vncserver -kill :%i
+[Install]
+WantedBy=multi-user.target
